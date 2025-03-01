@@ -1,0 +1,50 @@
+/* Estilos generales para la tabla */
+table {
+    width: 60%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para las cabeceras */
+th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Estilo para las celdas de la tabla */
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Efecto hover para las filas de la tabla */
+tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el texto dentro de las celdas */
+td, th {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para las filas impares */
+tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para las filas pares */
+tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Estilo para las tablas con bordes */
+table, th, td {
+    border: 1px solid #ddd;
+}

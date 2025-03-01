@@ -3,14 +3,14 @@ package modelos;
 
 public class Usuario {
 
-    private String id;
+    private int id;
     private String usuario;
     private String email;
     private String contraseña;
     private int rol;
 
     // Constructor
-    public Usuario(String id, String usuario, String email, String contraseña, int rol) {
+    public Usuario(int id, String usuario, String email, String contraseña, int rol) {
         this.id = id;
         this.usuario = usuario;
         this.email = email;
@@ -19,7 +19,7 @@ public class Usuario {
     }
 
     // Getters
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -40,7 +40,7 @@ public class Usuario {
     }
 
     // Setters
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

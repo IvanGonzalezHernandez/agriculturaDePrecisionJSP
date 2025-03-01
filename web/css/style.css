@@ -26,7 +26,54 @@ tr:hover {
     background-color: #f2f2f2;
 }
 
-/* Opcional: Ajustar el tamaño de las celdas */
+/* Ajuste de ancho para las celdas */
 th, td {
     width: 25%; /* Puedes ajustar el tamaño de las celdas */
+}
+
+/* Estilos generales para los formularios */
+form {
+    width: 60%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para las etiquetas dentro de los formularios */
+form label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+/* Estilo para los campos de entrada (input y select) */
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Estilo para el botón de los formularios */
+form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #45a049;
 }

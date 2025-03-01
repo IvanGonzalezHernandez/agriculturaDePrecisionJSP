@@ -35,6 +35,9 @@ public class login extends HttpServlet {
 
         // Crear un objeto UsuarioDAO y buscar el usuario en la base de datos
         UsuarioDAO usuarioDAO = new UsuarioDAO();
+        // Almaceno la conexión en una variable de contexto para compartirla
+        getServletContext().setAttribute("usuarioDAO", usuarioDAO);
+        
         Usuario usuario = usuarioDAO.crearUsuario(conexion, email, contraseña);
 
         // Recuperar la sesión actual o crear una nueva si no existe
@@ -49,7 +52,7 @@ public class login extends HttpServlet {
             session.setAttribute("rol", usuario.getRol());
 
             switch (usuario.getRol()) {
-                case 1 -> response.sendRedirect("panelAdministrador.jsp");
+                case 1 -> response.sendRedirect("administrador");
                 case 2 -> response.sendRedirect("panelAgricultor.jsp");
                 case 3 -> response.sendRedirect("panelMaquinista.jsp");
             }

@@ -15,16 +15,18 @@
     <body>
         <h1>Panel Maquinista</h1>
 
+        <h2>Tu usuario:</h2>
+
         <%-- Accedemos a los atributos de sesión --%>
         <%
-            String id = (String) session.getAttribute("id");
+            int id = (Integer) session.getAttribute("id");
             String usuario = (String) session.getAttribute("usuario");
             String email = (String) session.getAttribute("email");
             Integer rol = (Integer) session.getAttribute("rol");
         %>
 
         <%-- Verificamos si el usuario está autenticado y mostramos la tabla --%>
-        <% if (id != null && usuario != null && email != null) {%>
+        <% if (email != null) {%>
         <table>
             <tr>
                 <th>ID</th>

@@ -4,6 +4,7 @@
     Author     : ivang
 --%>
 
+<%@page import="modelos.Trabajo"%>
 <%@page import="modelos.Maquina"%>
 <%@page import="modelos.Parcela"%>
 <%@page import="java.util.ArrayList"%>
@@ -307,6 +308,97 @@
 
 
 
+
+
+
+
+
+        <%
+            // Obtener la lista de trabajos sin máquina del atributo de solicitud
+            ArrayList<Trabajo> trabajosSinMaquina = (ArrayList<Trabajo>) application.getAttribute("trabajosSinMaquina");
+        %>
+        <h2>Trabajos Sin Máquina Asignada:</h2>
+
+        <%-- Comprobamos si hay trabajos sin máquina --%>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Trabajo</th>
+                    <th>ID Agricultor</th>
+                    <th>Tipo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>ID Maquinista</th>
+                    <th>ID Parcela</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    // Iteramos sobre la lista de trabajos y mostramos los datos en las filas de la tabla
+                    for (Trabajo trabajo : trabajosSinMaquina) {
+                %>
+                <tr>
+                    <td><%= trabajo.getIdTrabajo()%></td>
+                    <td><%= trabajo.getIdAgricultor()%></td>
+                    <td><%= trabajo.getTipo()%></td>
+                    <td><%= trabajo.getFechaInicio()%></td>
+                    <td><%= trabajo.getFechaFin()%></td>
+                    <td><%= trabajo.getIdMaquinista()%></td>
+                    <td><%= trabajo.getIdParcela()%></td>
+                    <td><%= trabajo.getEstado()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
+
+
+
+        <h2>Crear Nuevo Trabajo:</h2>
+        <form action="administrador" method="POST">
+            <label for="idAgricultor">ID Agricultor:</label>
+            <input type="number" name="idAgricultor" required>
+
+            <label for="tipo">Tipo de Trabajo:</label>
+            <select name="tipo" required>
+                <option value="arado">Arado</option>
+                <option value="siembra">Siembra</option>
+                <option value="riego">Riego</option>
+                <option value="cosecha">Cosecha</option>
+            </select>
+
+            <label for="idParcela">ID Parcela:</label>
+            <input type="number" name="idParcela" required>
+
+            <button type="submit" name="boton" value="crearTrabajo">Crear Trabajo</button>
+        </form>
+
+
+
+
+
+        <h2>Asignar Máquina a Trabajo:</h2>
+
+        <form action="administrador" method="POST">
+            <label for="idTrabajo">Seleccionar Trabajo sin Máquina:</label>
+            <select name="idTrabajo" id="idTrabajo" required>
+                <%
+                    for (Trabajo trabajo : trabajosSinMaquina) {
+                %>
+                <option value="<%= trabajo.getIdTrabajo()%>">
+                    Trabajo ID <%= trabajo.getIdTrabajo()%> - Tipo: <%= trabajo.getTipo()%>
+                </option>
+                <% }%>
+            </select>
+
+            <label for="idMaquina">ID de la Máquina a Asignar:</label>
+            <input type="number" name="idMaquina" id="idMaquina" required>
+
+            <button type="submit" name="boton" value="asignarMaquina">Asignar Máquina</button>
+        </form>
 
 
 

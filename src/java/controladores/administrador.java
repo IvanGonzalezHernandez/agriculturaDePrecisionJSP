@@ -4,6 +4,7 @@ import DAO.ConectorBD;
 import DAO.AdministradorDAO;
 import DAO.MaquinaDAO;
 import DAO.ParcelaDAO;
+import DAO.TrabajoDAO;
 import DAO.UsuarioDAO;
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Maquina;
 import modelos.Parcela;
+import modelos.Trabajo;
 import modelos.Usuario;
 
 public class administrador extends HttpServlet {
@@ -56,6 +58,14 @@ public class administrador extends HttpServlet {
 
         // Almacenar la lista de parcelas en el contexto de la aplicación
         getServletContext().setAttribute("parcelas", parcelas);
+
+        TrabajoDAO trabajoDAO = new TrabajoDAO();
+
+        // Obtener la lista de trabajos sin maquinas
+        ArrayList<Trabajo> trabajosSinMaquina = trabajoDAO.getTrabajosSinMaquina(conexion);  // conexión a la base de datos
+
+        // Almacenar la lista de parcelas en el contexto de la aplicación
+        getServletContext().setAttribute("trabajosSinMaquina", trabajosSinMaquina);
 
         // Obtener el valor del botón
         String boton = request.getParameter("boton");
@@ -103,7 +113,6 @@ public class administrador extends HttpServlet {
             String id = request.getParameter("id");
             int idMaquina = Integer.parseInt(id); // Convertir a entero dado que getparameter devuelve string
 
-
             // Eliminar la parcela por catastro
             maquinaDAO.eliminarMaquina(conexion, idMaquina);
 
@@ -134,6 +143,29 @@ public class administrador extends HttpServlet {
 
             // Eliminar la parcela por catastro
             parcelaDAO.eliminarParcela(conexion, catastro);
+
+            // Redirigir de vuelta al panel
+            response.sendRedirect("panelAdministrador.jsp");
+            return; // Evita que el código continúe ejecutándose
+        }
+
+        if (boton != null && boton.equals("asignarMaquina")) {
+            // Obtener los parámetros del formulario
+            int idTrabajo = Integer.parseInt(request.getParameter("idTrabajo"));
+            int idMaquina = Integer.parseInt(request.getParameter("idMaquina"));
+
+            // Llamar al método para asignar la máquina
+            trabajoDAO.asignarMaquinaATrabajo(conexion, idTrabajo, idMaquina);
+            maquinaDAO.cambiarEstadoMaquina(conexion, idMaquina);
+            // Redirigir de vuelta al panel
+            response.sendRedirect("panelAdministrador.jsp");
+            return; // Evita que el código continúe ejecutándose
+        } else if (boton != null && boton.equals("crearTrabajo")) {
+            int idAgricultor = Integer.parseInt(request.getParameter("idAgricultor"));
+            String tipo = request.getParameter("tipo");
+            int idParcela = Integer.parseInt(request.getParameter("idParcela"));
+
+            trabajoDAO.crearTrabajo(conexion, idAgricultor, tipo, idParcela);
 
             // Redirigir de vuelta al panel
             response.sendRedirect("panelAdministrador.jsp");

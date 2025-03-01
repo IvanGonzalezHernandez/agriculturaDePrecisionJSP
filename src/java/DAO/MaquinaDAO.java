@@ -40,8 +40,7 @@ public class MaquinaDAO {
         ArrayList<Maquina> maquinas = new ArrayList<>();
         String query = "SELECT * FROM maquinas";
 
-        try (Statement stmt = conexion.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -59,4 +58,19 @@ public class MaquinaDAO {
         }
         return maquinas;
     }
+
+    public boolean cambiarEstadoMaquina(Connection con, int idMaquina) {
+        String sql = "UPDATE maquinas SET estado = NOT estado WHERE idMaquina = ?";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idMaquina);
+
+            int filasActualizadas = stmt.executeUpdate();
+            return filasActualizadas > 0; // Devuelve true si se realizó la actualización correctamente
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // En caso de error, devuelve false
+        }
+    }
+
 }

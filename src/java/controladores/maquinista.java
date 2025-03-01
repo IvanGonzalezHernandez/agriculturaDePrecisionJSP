@@ -5,7 +5,6 @@
 package controladores;
 
 import DAO.ConectorBD;
-import DAO.UsuarioDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import javax.servlet.ServletException;
@@ -13,55 +12,38 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelos.Usuario;
 
 /**
  *
  * @author ivang
  */
-public class login extends HttpServlet {
+public class maquinista extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // Obtener el correo y la contraseña desde el formulario
-        String email = request.getParameter("email");
-        String contraseña = request.getParameter("password");
+        // Recuperar la sesión actual o crear una nueva si no existe
+        HttpSession session = request.getSession(true);
 
         // Crear la conexión a la base de datos
         ConectorBD conector = new ConectorBD("localhost", "agriculturadeprecisionjsp", "root", "");
         Connection conexion = conector.getConexion();
 
-        // Crear un objeto UsuarioDAO y buscar el usuario en la base de datos
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        // Almaceno la conexión en una variable de contexto para compartirla
-        getServletContext().setAttribute("usuarioDAO", usuarioDAO);
-        
-        Usuario usuario = usuarioDAO.crearUsuario(conexion, email, contraseña);
+        //Recuperamos de la sesion el id del agricultor
+        int id = (Integer) session.getAttribute("id");
 
-        // Recuperar la sesión actual o crear una nueva si no existe
-        HttpSession session = request.getSession(true);
-
-        // Verificar si el usuario existe
-        if (usuario != null) {
-            // Si el usuario es válido, guardamos su información en la sesión
-            session.setAttribute("id", usuario.getId());
-            session.setAttribute("usuario", usuario.getUsuario());
-            session.setAttribute("email", usuario.getEmail());
-            session.setAttribute("rol", usuario.getRol());
-
-            switch (usuario.getRol()) {
-                case 1 -> response.sendRedirect("administrador");
-                case 2 -> response.sendRedirect("agricultor");
-                case 3 -> response.sendRedirect("maquinista");
-            }
-
-        } else {
-            // Si no es válido, redirigir al login con un mensaje de error
-            response.sendRedirect("index.jsp?error=true");
-        }
-
+        // Redirigir a la página JSP
+        response.sendRedirect("panelMaquinista.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -104,4 +86,3 @@ public class login extends HttpServlet {
     }// </editor-fold>
 
 }
-

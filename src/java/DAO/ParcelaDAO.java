@@ -11,7 +11,7 @@ public class ParcelaDAO {
     public boolean insertarParcela(Connection conexion, Parcela parcela) {
         String sql = "INSERT INTO parcelas (catastro, idAgricultor, superficie) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setString(1, parcela.getCatastro());
+            stmt.setInt(1, parcela.getCatastro());
             stmt.setInt(2, parcela.getIdUsuario());
             stmt.setInt(3, parcela.getSuperficie()); // Cambio a int
             int filasAfectadas = stmt.executeUpdate();
@@ -23,10 +23,10 @@ public class ParcelaDAO {
     }
 
     // Método para eliminar una parcela por catastro
-    public boolean eliminarParcela(Connection conexion, String catastro) {
+    public boolean eliminarParcela(Connection conexion, int catastro) {
         String sql = "DELETE FROM parcelas WHERE catastro = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setString(1, catastro);
+            stmt.setInt(1, catastro);
             int filasAfectadas = stmt.executeUpdate();
             return filasAfectadas > 0;
         } catch (SQLException e) {
@@ -42,7 +42,7 @@ public class ParcelaDAO {
         try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                String catastro = rs.getString("catastro");
+                int catastro = rs.getInt("catastro");
                 int idUsuario = rs.getInt("idAgricultor");
                 int superficie = rs.getInt("superficie");
 
@@ -64,7 +64,7 @@ public class ParcelaDAO {
             stmt.setInt(1, idUsuario);  // Establece el ID del agricultor como parámetro
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    String catastro = rs.getString("catastro");  // Obtén el catastro de la parcela
+                    int catastro = rs.getInt("catastro");  // Obtén el catastro de la parcela
                     int superficie = rs.getInt("superficie");  // Obtén la superficie de la parcela
 
                     // Crea un objeto Parcela con los datos obtenidos

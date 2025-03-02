@@ -37,11 +37,20 @@ public class login extends HttpServlet {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         // Almaceno la conexión en una variable de contexto para compartirla
         getServletContext().setAttribute("usuarioDAO", usuarioDAO);
-        
+
         Usuario usuario = usuarioDAO.crearUsuario(conexion, email, contraseña);
 
         // Recuperar la sesión actual o crear una nueva si no existe
         HttpSession session = request.getSession(true);
+
+        // Obtener el valor del botón
+        String boton = request.getParameter("boton");
+
+        if (boton != null && boton.equals("cerrarSesion")) {
+            session.invalidate();
+            response.sendRedirect("index.jsp");
+            return;
+        }
 
         // Verificar si el usuario existe
         if (usuario != null) {
@@ -52,9 +61,12 @@ public class login extends HttpServlet {
             session.setAttribute("rol", usuario.getRol());
 
             switch (usuario.getRol()) {
-                case 1 -> response.sendRedirect("administrador");
-                case 2 -> response.sendRedirect("agricultor");
-                case 3 -> response.sendRedirect("maquinista");
+                case 1 ->
+                    response.sendRedirect("administrador");
+                case 2 ->
+                    response.sendRedirect("agricultor");
+                case 3 ->
+                    response.sendRedirect("maquinista");
             }
 
         } else {
@@ -104,4 +116,3 @@ public class login extends HttpServlet {
     }// </editor-fold>
 
 }
-

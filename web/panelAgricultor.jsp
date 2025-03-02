@@ -1,6 +1,12 @@
+<%@page import="modelos.Trabajo"%>
 <%@page import="modelos.Parcela"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    int rolComprobacion = (int) session.getAttribute("rol");
+
+    if (rolComprobacion == 2) {
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -111,6 +117,63 @@
         </form>
 
 
+
+
+
+        <%
+            // Obtener la lista de trabajos sin máquina del atributo de solicitud
+            ArrayList<Trabajo> trabajosFinalizadosAgricultor = (ArrayList<Trabajo>) application.getAttribute("trabajosFinalizadosAgricultor");
+        %>
+
+        <h2>Trabajos Finalizados para el agricultor:</h2>
+
+        <%-- Comprobamos si hay trabajos finalizdos --%>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Trabajo</th>
+                    <th>ID Agricultor</th>
+                    <th>Tipo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>ID Maquinista</th>
+                    <th>Catastro Parcela</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    // Iteramos sobre la lista de trabajos y mostramos los datos en las filas de la tabla
+                    for (Trabajo trabajo : trabajosFinalizadosAgricultor) {
+                %>
+                <tr>
+                    <td><%= trabajo.getIdTrabajo()%></td>
+                    <td><%= trabajo.getIdAgricultor()%></td>
+                    <td><%= trabajo.getTipo()%></td>
+                    <td><%= trabajo.getFechaInicio()%></td>
+                    <td><%= trabajo.getFechaFin()%></td>
+                    <td><%= trabajo.getIdMaquinista()%></td>
+                    <td><%= trabajo.getIdParcela()%></td>
+                    <td><%= trabajo.getEstado()%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
+
+
+
+        <form action="login"> 
+            <button type="submit" name="boton" value="cerrarSesion" style="background-color: black;">Cerrar sesión</button>
+        </form>   
+
+        <%
+            } else {
+                response.sendRedirect("index.jsp?error=true"); // Redirigir al index
+            }
+        %>
 
     </body>
 </html>

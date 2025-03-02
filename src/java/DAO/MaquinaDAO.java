@@ -15,7 +15,7 @@ public class MaquinaDAO {
             stmt.setString(2, maquina.getTipo());
             stmt.setInt(3, maquina.getCapacidad());
             stmt.setInt(4, maquina.getAnho());
-            stmt.setBoolean(5, maquina.isEstado());
+            stmt.setString(5, maquina.getEstado());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class MaquinaDAO {
                 String tipo = rs.getString("tipo");
                 int capacidad = rs.getInt("capacidad");
                 int anho = rs.getInt("anho");
-                boolean estado = rs.getBoolean("estado");
+                String estado = rs.getString("estado");
 
                 Maquina maquina = new Maquina(id, modelo, tipo, capacidad, anho, estado);
                 maquinas.add(maquina);
@@ -59,17 +59,18 @@ public class MaquinaDAO {
         return maquinas;
     }
 
-    public boolean cambiarEstadoMaquina(Connection con, int idMaquina) {
-        String sql = "UPDATE maquinas SET estado = NOT estado WHERE idMaquina = ?";
+    public boolean cambiarEstadoMaquina(Connection con, int idMaquina, String nuevoEstado) {
+        String sql = "UPDATE maquinas SET estado = ? WHERE id = ?";
 
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, idMaquina);
+            stmt.setString(1, nuevoEstado.toLowerCase()); // Se convierte a minúsculas para que coincida con MySQL
+            stmt.setInt(2, idMaquina);
 
             int filasActualizadas = stmt.executeUpdate();
-            return filasActualizadas > 0; // Devuelve true si se realizó la actualización correctamente
+            return filasActualizadas > 0; // Devuelve true si la actualización tuvo éxito
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false; // En caso de error, devuelve false
+            System.err.println("Error al actualizar el estado de la máquina: " + e.getMessage());
+            return false;
         }
     }
 

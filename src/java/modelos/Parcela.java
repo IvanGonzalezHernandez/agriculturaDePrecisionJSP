@@ -1,7 +1,7 @@
 package modelos;
 
 public class Parcela {
-    private String catastro;
+    private int catastro;
     private int idUsuario;
     private int superficie;
 
@@ -10,18 +10,18 @@ public class Parcela {
     }
 
     // Constructor con parámetros
-    public Parcela(String catastro, int idUsuario, int superficie) {
+    public Parcela(int catastro, int idUsuario, int superficie) {
         this.catastro = catastro;
         this.idUsuario = idUsuario;
         this.superficie = superficie;
     }
 
     // Getters y Setters
-    public String getCatastro() {
+    public int getCatastro() {
         return catastro;
     }
 
-    public void setCatastro(String catastro) {
+    public void setCatastro(int catastro) {
         this.catastro = catastro;
     }
 

@@ -6,10 +6,10 @@ public class Maquina {
     private String tipo;
     private int capacidad;
     private int anho;
-    private boolean estado;
+    private String estado;
 
     // Constructor
-    public Maquina(int id, String modelo, String tipo, int capacidad, int anho, boolean estado) {
+    public Maquina(int id, String modelo, String tipo, int capacidad, int anho, String estado) {
         this.id = id;
         this.modelo = modelo;
         this.tipo = tipo;
@@ -59,11 +59,11 @@ public class Maquina {
         this.anho = anho;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 }

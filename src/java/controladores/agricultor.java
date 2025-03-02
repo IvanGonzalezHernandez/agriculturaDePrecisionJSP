@@ -7,7 +7,6 @@ package controladores;
 import DAO.ConectorBD;
 import DAO.ParcelaDAO;
 import DAO.TrabajoDAO;
-import DAO.UsuarioDAO;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Parcela;
+import modelos.Trabajo;
 
 /**
  *
@@ -47,12 +47,20 @@ public class agricultor extends HttpServlet {
         // Almacenar la lista de parcelas en el contexto de la aplicación
         getServletContext().setAttribute("parcelas", parcelas);
 
+        TrabajoDAO trabajoDAO = new TrabajoDAO();
+
+        // Obtener la lista de trabajos sin maquinas
+        ArrayList<Trabajo> trabajosFinalizadosAgricultor = trabajoDAO.obtenerTrabajosFinalizadosAgricultor(conexion, id);
+
+        // Almacenar la lista de parcelas en el contexto de la aplicación
+        getServletContext().setAttribute("trabajosFinalizadosAgricultor", trabajosFinalizadosAgricultor);
+
         // Obtener el valor del botón
         String boton = request.getParameter("boton");
 
         if (boton != null && boton.equals("anadirParcela")) {
             // Obtener los datos del formulario
-            String catastro = request.getParameter("catastro");
+            int catastro = Integer.parseInt(request.getParameter("catastro"));
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int superficie = Integer.parseInt(request.getParameter("superficie"));
 
@@ -66,7 +74,7 @@ public class agricultor extends HttpServlet {
             return; // Evita que el código continúe ejecutándose
         } else if (boton != null && boton.equals("eliminarParcela")) {
             // Obtener el catastro del formulario
-            String catastro = request.getParameter("catastro");
+            int catastro = Integer.parseInt(request.getParameter("catastro"));
 
             // Eliminar la parcela por catastro
             parcelaDAO.eliminarParcela(conexion, catastro);
@@ -80,8 +88,6 @@ public class agricultor extends HttpServlet {
             int idAgricultor = Integer.parseInt(request.getParameter("idAgricultor"));
             String tipo = request.getParameter("tipo");
             int idParcela = Integer.parseInt(request.getParameter("idParcela"));
-            
-            TrabajoDAO trabajoDAO = new TrabajoDAO();
 
             trabajoDAO.crearTrabajo(conexion, idAgricultor, tipo, idParcela);
 

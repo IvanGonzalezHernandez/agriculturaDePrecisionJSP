@@ -62,7 +62,7 @@ public class administrador extends HttpServlet {
         TrabajoDAO trabajoDAO = new TrabajoDAO();
 
         // Obtener la lista de trabajos sin maquinas
-        ArrayList<Trabajo> trabajosSinMaquina = trabajoDAO.getTrabajosSinMaquina(conexion);  // conexión a la base de datos
+        ArrayList<Trabajo> trabajosSinMaquina = trabajoDAO.getTrabajosSinMaquina(conexion);
 
         // Almacenar la lista de parcelas en el contexto de la aplicación
         getServletContext().setAttribute("trabajosSinMaquina", trabajosSinMaquina);
@@ -82,7 +82,7 @@ public class administrador extends HttpServlet {
             AdministradorDAO administradorDAO = new AdministradorDAO();
             administradorDAO.insertarUsuario(conexion, usuario, email, password, rol);
 
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
 
         } else if (boton != null && boton.equals("eliminarUsuario")) {
@@ -92,7 +92,7 @@ public class administrador extends HttpServlet {
             AdministradorDAO administradorDAO = new AdministradorDAO();
             administradorDAO.eliminarUsuario(conexion, id);
 
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
         }
 
@@ -101,12 +101,16 @@ public class administrador extends HttpServlet {
             String tipo = request.getParameter("tipo");
             int capacidad = Integer.parseInt(request.getParameter("capacidad"));
             int anho = Integer.parseInt(request.getParameter("anho"));
-            boolean estado = Boolean.parseBoolean(request.getParameter("estado"));
+            String estado = request.getParameter("estado");
 
             // Crear una instancia de la clase Maquina con los valores obtenidos
             Maquina nuevaMaquina = new Maquina(0, modelo, tipo, capacidad, anho, estado);
 
             maquinaDAO.insertarMaquina(conexion, nuevaMaquina);
+
+            // Redirigir de vuelta al panel
+            response.sendRedirect("administrador");
+            return; // Evita que el código continúe ejecutándose
 
         } else if (boton != null && boton.equals("eliminarMaquina")) {
             // Obtener el id de la maquina
@@ -117,14 +121,14 @@ public class administrador extends HttpServlet {
             maquinaDAO.eliminarMaquina(conexion, idMaquina);
 
             // Redirigir de vuelta al panel
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
 
         }
 
         if (boton != null && boton.equals("anadirParcela")) {
             // Obtener los datos del formulario
-            String catastro = request.getParameter("catastro");
+            int catastro = Integer.parseInt(request.getParameter("catastro"));
             int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
             int superficie = Integer.parseInt(request.getParameter("superficie"));
 
@@ -134,18 +138,18 @@ public class administrador extends HttpServlet {
             parcelaDAO.insertarParcela(conexion, parcela);
 
             // Redirigir de vuelta al panel
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
 
         } else if (boton != null && boton.equals("eliminarParcela")) {
             // Obtener el catastro del formulario
-            String catastro = request.getParameter("catastro");
+            int catastro = Integer.parseInt(request.getParameter("catastro"));
 
             // Eliminar la parcela por catastro
             parcelaDAO.eliminarParcela(conexion, catastro);
 
             // Redirigir de vuelta al panel
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
         }
 
@@ -155,10 +159,11 @@ public class administrador extends HttpServlet {
             int idMaquina = Integer.parseInt(request.getParameter("idMaquina"));
 
             // Llamar al método para asignar la máquina
+            maquinaDAO.cambiarEstadoMaquina(conexion, idMaquina, "ocupada");
             trabajoDAO.asignarMaquinaATrabajo(conexion, idTrabajo, idMaquina);
-            maquinaDAO.cambiarEstadoMaquina(conexion, idMaquina);
+     
             // Redirigir de vuelta al panel
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
         } else if (boton != null && boton.equals("crearTrabajo")) {
             int idAgricultor = Integer.parseInt(request.getParameter("idAgricultor"));
@@ -168,7 +173,7 @@ public class administrador extends HttpServlet {
             trabajoDAO.crearTrabajo(conexion, idAgricultor, tipo, idParcela);
 
             // Redirigir de vuelta al panel
-            response.sendRedirect("panelAdministrador.jsp");
+            response.sendRedirect("administrador");
             return; // Evita que el código continúe ejecutándose
         }
 

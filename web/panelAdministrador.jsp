@@ -3,6 +3,11 @@
     Created on : 1 mar 2025, 9:23:47
     Author     : ivang
 --%>
+<%
+    int rolComprobacion = (int) session.getAttribute("rol");
+
+    if (rolComprobacion == 1) {
+%>
 
 <%@page import="modelos.Trabajo"%>
 <%@page import="modelos.Maquina"%>
@@ -165,7 +170,7 @@
                     <td><%= maquina.getTipo()%></td>
                     <td><%= maquina.getCapacidad()%></td>
                     <td><%= maquina.getAnho()%></td>
-                    <td><%= maquina.isEstado() ? "Activo" : "Inactivo"%></td>
+                    <td><%= maquina.getEstado()%></td>
                 </tr>
                 <%
                     }
@@ -202,8 +207,8 @@
 
             <label for="estado">Estado:</label>
             <select id="estado" name="estado">
-                <option value="true">Activo</option>
-                <option value="false">Inactivo</option>
+                <option value="true">Libre</option>
+                <option value="false">Ocupada</option>
             </select><br><br>
 
             <button type="submit" name="boton" value="anadirMaquina">Añadir Máquina</button>
@@ -330,7 +335,7 @@
                     <th>Fecha Inicio</th>
                     <th>Fecha Fin</th>
                     <th>ID Maquinista</th>
-                    <th>ID Parcela</th>
+                    <th>Catastro Parcela</th>
                     <th>Estado</th>
                 </tr>
             </thead>
@@ -370,7 +375,7 @@
                 <option value="cosecha">Cosecha</option>
             </select>
 
-            <label for="idParcela">ID Parcela:</label>
+            <label for="idParcela">Catastro Parcela:</label>
             <input type="number" name="idParcela" required>
 
             <button type="submit" name="boton" value="crearTrabajo">Crear Trabajo</button>
@@ -404,14 +409,20 @@
 
 
 
+        <form action="login"> 
+            <button type="submit" name="boton" value="cerrarSesion" style="background-color: black;">Cerrar sesión</button>
+        </form>   
 
 
 
 
 
 
-
-
+        <%
+            } else {
+                response.sendRedirect("index.jsp?error=true"); // Redirigir al index
+            }
+        %>
 
     </body>
 </html>
